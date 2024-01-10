@@ -1,0 +1,246 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<!--app-content open-->
+<div class="main-content app-content mt-0">
+    <div class="side-app">
+
+        <!-- CONTAINER -->
+        <div class="main-container container-fluid">
+
+            <!-- PAGE-HEADER -->
+            <div class="page-header">
+                <h1 class="page-title">Short Term Course Create</h1>
+                <a href="{% url "courses" %}" class="btn btn-danger btn-pill">View</a>
+
+            </div>
+            <!-- PAGE-HEADER END -->
+
+
+
+            <form method="post" class="" action='' id="courseForm" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row">
+                    <!-- IMAGE UPLOADER -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Image Upload</h3>
+                            </div>
+                            <div class=" card-body">
+                                <div class="row mb-5">
+                                    <div class="col-lg-12 col-sm-12 mb-4 mb-lg-0">
+                                        <input type="file" name='image' class="dropify" data-bs-height="180" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- IMAGE UPLOADER end -->
+
+                    <!-- DETAILS START -->
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Short Term Course Information</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+
+                                    <!--  Title -->
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label"> Title</label>
+                                            <input type="text" name='title' class="form-control" placeholder=" Title">
+                                        </div>
+                                    </div>
+                                    <!--  Subtitle -->
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Subtitle</label>
+                                            <input type="text" name='subtitle' class="form-control" placeholder="Subtitle">
+                                        </div>
+                                    </div>
+
+                                    <!-- Description -->
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Description</label>
+                                            <div >
+                                                <textarea name="discription" class="form-control" rows="10" placeholder="Description"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                  
+
+                                    <div class="form-group">
+
+                                        <div class="multi-field-wrapper ">
+                                          <div class="multi-fields">
+                                            <div class="multi-field">
+                                              <div class="row">
+                                              <div class="col-lg-6" style="padding-right:0px">
+                                                  <div class="form-group">
+                                                    <label>Amount</label>
+                                                    <input type="text" name="amount" class="form-control form-control-lg" placeholder="Value" required>
+                                                  </div>
+                                                </div>
+                                            <!--
+                                                <div class="col-lg-6" style="padding-right:0px">
+                                                  <div class="form-group">
+                                                    <label>Amount</label>
+                                                
+                                                    <textarea class="form-control mb-4" name='' placeholder="Textarea"  ></textarea>
+                                                  </div>
+                                                </div>
+                                            
+                                              </div>
+                                              <button type="button"
+                                                class="remove-field float-right btn btn-danger btn-sm icon-btn ml-2 "><i
+                                                  class="mdi mdi-delete"></i></button>
+                                            </div>
+                                          </div>
+                                          
+                                          <div>
+                                            
+                                            <button type="button" type="button"
+                                              class=" add-field btn btn-info btn-sm icon-btn ml-2 mb-2">
+                                              Add New<i class="mdi mdi-plus"></i>
+                                            </button>
+                                          </div>
+                                           -->  
+                                        </div>
+                                        
+                                        </div>
+                                                                   
+
+                                    <!-- status -->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Status</label>
+                                            <select name='status' class="form-control select2" data-placeholder="Status" required>
+                                                <option value="Enable">Enable</option>
+                                                <option value="Disable">Disable</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- SUBMIT START -->
+                                    <div class="col-lg-12 ">
+                                        <div class="mt-5">
+                                            <a href="" class="btn btn-default btn-pill">Cancel</a>
+                                            <button type='submit' id="submitBtn" class="btn btn-warning btn-pill">Submit</button>
+                                        </div>
+                                    </div>
+                                     <!-- SUBMIT END -->
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- DETAILS END -->
+
+
+                </div>
+
+        </div>
+        </form>
+
+
+    </div>
+    <!-- CONTAINER END -->
+</div>
+</div>
+<!--app-content close-->
+
+
+<script>
+    $(document).ready(function() {
+        $("#submitBtn").on("click", function() {
+            var formData = new FormData($("#courseForm")[0]);
+            
+
+            var title = $("#title").val();
+            var subtitle = $("#subtitle").val();
+            var description = $("#description").val();
+            var amount = $("#amount").val();
+            var status = $("#status").val();
+            var image = $("#image")[0].files[0];
+
+            alert(title,subtitle,description,amount,status)
+
+            / Validation with regex patterns
+            var titleRegex = /^[a-zA-Z\s]+$/; // Alphanumeric with spaces
+            var subtitleRegex = /^[a-zA-Z\s]+$/; // Alphanumeric with spaces
+            var descriptionRegex = /^[\s\S]+$/; // Any character including newlines
+            var amountRegex = /^\d+(\.\d{1,2})?$/; // Decimal number with up to 2 decimal places
+            var statusRegex = /^(Enable|Disable)$/; // Either "Enable" or "Disable"
+
+            // Perform validation
+            if (!titleRegex.test(title)) {
+                alert("Invalid title. Please use only alphanumeric characters and spaces.");
+                return;
+            }
+
+            if (!subtitleRegex.test(subtitle)) {
+                alert("Invalid subtitle. Please use only alphanumeric characters and spaces.");
+                return;
+            }
+
+            if (!descriptionRegex.test(description)) {
+                alert("Invalid description. Please enter a valid description.");
+                return;
+            }
+
+            if (!amountRegex.test(amount)) {
+                alert("Invalid amount. Please enter a valid decimal number.");
+                return;
+            }
+
+            if (!statusRegex.test(status)) {
+                alert("Invalid status. Please choose either 'Enable' or 'Disable'.");
+                return;
+            }
+
+            if (!image) {
+                alert("Please select an image.");
+                return;
+            }
+
+            $.ajax({
+                url: $("#courseForm").attr("action"),
+                type: "POST",
+                data: formData,
+                success: function(response) {
+
+                },
+                error: function(error) {
+                    
+                },
+            });
+        });
+    });
+</script>
+
+
+
+<script>
+    
+
+    $('.multi-field-wrapper').each(function () {
+      var $wrapper = $('.multi-fields', this);
+      $(".add-field", $(this)).click(function (e) {
+        $('.multi-field:first-child', $wrapper).clone(true).appendTo($wrapper).find('input,textarea').val('')
+          .focus();
+      });
+      $('.multi-field .remove-field', $wrapper).click(function () {
+        if ($('.multi-field', $wrapper).length > 1)
+          $(this).parent('.multi-field').remove();
+      });
+    });
+  </script>
+
+  {% endblock body %}
